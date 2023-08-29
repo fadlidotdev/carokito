@@ -1,8 +1,4 @@
-import {useGetCategoryQuery} from "@/api/category";
-import {
-  useInsertCategoryMutation,
-  useUpdateCategoryMutation,
-} from "@/api/category/mutation";
+import {useInsertCategoryMutation} from "@/api/category/mutation";
 import {Button, TextField} from "@/components/common";
 import {
   DashboardContent,
@@ -18,7 +14,7 @@ import {toast} from "react-hot-toast";
 export default function Update() {
   const router = useRouter();
 
-  const {register, setValue, watch, reset, handleSubmit: onSubmit} = useForm();
+  const {register, setValue, watch, handleSubmit: onSubmit} = useForm();
   const name = watch("name");
   useEffect(() => {
     setValue("slug", generateSlugFromString(name));
@@ -26,7 +22,7 @@ export default function Update() {
 
   const insertMutation = useInsertCategoryMutation();
 
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async (values: any) => {
     toast.promise(
       insertMutation.mutateAsync(values, {
         onSuccess: (data) => {

@@ -16,10 +16,10 @@ export default function Create() {
 
   const {mutateAsync} = useInsertAdminMutation();
 
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async (values: any) => {
     toast.promise(
       mutateAsync(values, {
-        onSuccess: (data) => {
+        onSuccess: () => {
           router.push(routes("dashboard/admin"));
         },
       }),

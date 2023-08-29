@@ -4,10 +4,8 @@ import {
   DashboardContent,
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
-import {generateSlugFromString} from "@/utils/core";
 import {routes} from "@/utils/routes";
 import {useRouter} from "next/router";
-import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {toast} from "react-hot-toast";
 
@@ -18,7 +16,7 @@ export default function Create() {
 
   const insertMutation = useInsertHashtagMutation();
 
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async (values: any) => {
     toast.promise(
       insertMutation.mutateAsync(values, {
         onSuccess: (data) => {

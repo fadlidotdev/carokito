@@ -9,7 +9,6 @@ import {
   DashboardHeader,
 } from "@/components/layouts/DashboardLayout";
 import {useDisclosure} from "@/hooks";
-import {generateSlugFromString} from "@/utils/core";
 import {routes} from "@/utils/routes";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
@@ -36,7 +35,7 @@ export default function Update() {
   const updateMutation = useUpdateHashtagMutation();
   const deleteMutation = useDeleteHashtagMutation();
 
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async (values: any) => {
     toast.promise(
       updateMutation.mutateAsync(
         {...values, id: parseInt(id as string)},

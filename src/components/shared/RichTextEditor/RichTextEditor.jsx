@@ -10,16 +10,9 @@ import {
   QuoteIcon,
   UnderlineIcon,
 } from "lucide-react";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Editor, Element as SlateElement, Transforms, createEditor} from "slate";
 import {Editable, Slate, useSlate, withReact} from "slate-react";
-
-const defaultValue = [
-  {
-    type: "paragraph",
-    children: [{text: "A line of text in a paragraph."}],
-  },
-];
 
 const HOTKEYS = {
   "mod+b": "bold",
