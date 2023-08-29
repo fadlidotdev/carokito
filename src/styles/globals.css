@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  @apply bg-gray-100 text-gray-950;
+}
+
+@layer base {
+  .post-container h1 {
+    @apply text-3xl font-bold;
+  }
+
+  .post-container h2 {
+    @apply text-xl font-bold;
+  }
+
+  .post-container h3 {
+    @apply text-lg font-bold;
+  }
+
+  .post-container ol {
+    @apply list-decimal list-inside;
+  }
+
+  .post-container ul {
+    @apply list-disc list-inside;
+  }
+
+  .post-container blockquote {
+    @apply pl-2 italic text-gray-400 border-l-2 border-gray-500;
+  }
+}
+
+@layer utilities {
+
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
+.text-gray {
+  @apply text-gray-400;
+}
