@@ -38,11 +38,10 @@ const DashboardAuthContextProvider = ({children}: Props) => {
 
   useEffect(() => {
     if (typeof accessToken === "string") {
-      if (accessToken && pathname !== routes("dashboard/login")) return;
-
-      Router.push(
-        accessToken ? routes("dashboard") : routes("dashboard/login"),
-      );
+      // if (accessToken && pathname !== routes("dashboard/login")) return;
+      // Router.push(
+      //   accessToken ? routes("dashboard") : routes("dashboard/login"),
+      // );
     }
   }, [accessToken, pathname]);
 
