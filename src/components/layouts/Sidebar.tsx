@@ -10,6 +10,7 @@ import NavItem from "./NavItem";
 import {useEffect, useRef} from "react";
 import useWindowSize from "@/hooks/useWindowSize";
 import {useContextAuth} from "./DashboardAuthContextProvider";
+import Link from "next/link";
 
 type Props = {
   show: boolean;
@@ -76,12 +77,14 @@ const Sidebar = ({show, onToggle}: Props) => {
             </li>
 
             <li>
+              <Link href="/dashboard/category">To Category</Link>
+              {/*               
               <NavItem
                 href={routes("dashboard/category")}
                 iconSrc="/icons/product-list.svg"
                 label="Category"
                 active={pathname.includes(routes("dashboard/category"))}
-              />
+              /> */}
             </li>
 
             <li>
