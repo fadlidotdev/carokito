@@ -6,24 +6,19 @@ import {
 } from "@/components/layouts/DashboardLayout";
 import {useRouteMappingPagination, useTotalPage} from "@/hooks/core";
 import {routes} from "@/utils/routes";
-import {GetServerSideProps} from "next";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 
-interface Props {
-  initialPage: number;
-}
-
 const columns = ["ID", "Hashtag", "Action"];
 
 const ITEMS_PER_PAGE = 10;
 
-export default function Index({initialPage}: Props) {
+export default function Index() {
   const router = useRouter();
 
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const {data, isLoading, error} = useGetAllHashtagQuery({
     page: currentPage,
@@ -83,13 +78,3 @@ export default function Index({initialPage}: Props) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({query}) => {
-  const {page} = query;
-
-  return {
-    props: {
-      initialPage: parseInt(page as string) || 1,
-    },
-  };
-};

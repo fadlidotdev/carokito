@@ -11,10 +11,6 @@ import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 
-// interface Props {
-//   initialPage: number;
-// }
-
 const columns = ["ID", "Name", "Slug", "Action"];
 
 const ITEMS_PER_PAGE = 10;
@@ -83,13 +79,3 @@ export default function Index() {
     </>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps = async ({query}) => {
-//   const {page} = query;
-
-//   return {
-//     props: {
-//       initialPage: parseInt(page as string) || 1,
-//     },
-//   };
-// };

@@ -77,8 +77,6 @@ const Sidebar = ({show, onToggle}: Props) => {
             </li>
 
             <li>
-              <Link href="/dashboard/category">To Category</Link>
-
               <NavItem
                 href={routes("dashboard/category")}
                 iconSrc="/icons/product-list.svg"

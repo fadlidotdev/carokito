@@ -8,17 +8,12 @@ import {useRouteMappingPagination, useTotalPage} from "@/hooks/core";
 import {routes} from "@/utils/routes";
 import {format, setDefaultOptions} from "date-fns";
 import {id} from "date-fns/locale";
-import {GetServerSideProps} from "next";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 
 setDefaultOptions({locale: id});
-
-interface Props {
-  initialPage: number;
-}
 
 const columns = [
   "Title",
@@ -31,10 +26,10 @@ const columns = [
 
 const ITEMS_PER_PAGE = 10;
 
-export default function Index({initialPage}: Props) {
+export default function Index() {
   const router = useRouter();
 
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [currentPage, setCurrentPage] = useState(1);
   const {data, isLoading, error} = useGetAllPostQuery({
     page: currentPage,
     limit: ITEMS_PER_PAGE,
@@ -70,7 +65,7 @@ export default function Index({initialPage}: Props) {
       <DashboardContent>
         <Table loading={isLoading} columns={columns} className="mb-6">
           {data?.data?.map(
-            ({id, title, created_at, hashtags, admin, category}) => (
+            ({id, title, created_at, hashtags, admin, category}: any) => (
               <TR key={id}>
                 <TD>{title}</TD>
                 <TD>{category.name}</TD>
@@ -106,13 +101,3 @@ export default function Index({initialPage}: Props) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({query}) => {
-  const {page} = query;
-
-  return {
-    props: {
-      initialPage: parseInt(page as string) || 1,
-    },
-  };
-};
