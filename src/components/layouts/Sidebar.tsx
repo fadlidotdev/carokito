@@ -10,7 +10,6 @@ import NavItem from "./NavItem";
 import {useEffect, useRef} from "react";
 import useWindowSize from "@/hooks/useWindowSize";
 import {useContextAuth} from "./DashboardAuthContextProvider";
-import Link from "next/link";
 
 type Props = {
   show: boolean;
