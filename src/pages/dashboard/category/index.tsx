@@ -1,4 +1,3 @@
-import {useGetAllCategoryQuery} from "@/api/category/query";
 import {Button, Pagination, TD, TR, Table} from "@/components/common";
 import {
   DashboardContent,
@@ -9,8 +8,7 @@ import {routes} from "@/utils/routes";
 import {GetServerSideProps} from "next";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {useCallback, useEffect, useState} from "react";
-import {toast} from "react-hot-toast";
+import {useCallback, useState} from "react";
 
 interface Props {
   initialPage: number;
@@ -25,16 +23,17 @@ export default function Index({initialPage}: Props) {
 
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const {data, isLoading, error} = useGetAllCategoryQuery({
-    page: currentPage,
-    limit: ITEMS_PER_PAGE,
-  });
+  // const {data, isLoading, error} = useGetAllCategoryQuery({
+  //   page: currentPage,
+  //   limit: ITEMS_PER_PAGE,
+  // });
 
-  useEffect(() => {
-    if (error) toast.error(error as string);
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) toast.error(error as string);
+  // }, [error]);
 
-  const totalPage = useTotalPage(data?.count || 0, ITEMS_PER_PAGE);
+  // const totalPage = useTotalPage(data?.count || 0, ITEMS_PER_PAGE);
+  const totalPage = useTotalPage(0, ITEMS_PER_PAGE);
 
   useRouteMappingPagination(currentPage);
 
@@ -58,8 +57,8 @@ export default function Index({initialPage}: Props) {
       />
 
       <DashboardContent>
-        <Table loading={isLoading} columns={columns} className="mb-6">
-          {data?.data?.map(({id, name, slug}) => (
+        <Table loading={false} columns={columns} className="mb-6">
+          {[].map(({id, name, slug}) => (
             <TR key={id}>
               <TD>{id}</TD>
               <TD>{name}</TD>
