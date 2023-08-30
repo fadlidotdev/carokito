@@ -78,13 +78,13 @@ const Sidebar = ({show, onToggle}: Props) => {
 
             <li>
               <Link href="/dashboard/category">To Category</Link>
-              {/*               
+
               <NavItem
                 href={routes("dashboard/category")}
                 iconSrc="/icons/product-list.svg"
                 label="Category"
                 active={pathname.includes(routes("dashboard/category"))}
-              /> */}
+              />
             </li>
 
             <li>
