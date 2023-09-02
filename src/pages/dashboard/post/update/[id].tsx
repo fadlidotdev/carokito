@@ -5,6 +5,7 @@ import {
 } from "@/api/post/mutation";
 import {useGetPostQuery} from "@/api/post/query";
 import {Button, ConfirmModal, Select, TextField} from "@/components/common";
+import {useAuthContext} from "@/components/layouts/DashboardAuthContextProvider";
 import {
   DashboardContent,
   DashboardHeader,
@@ -35,11 +36,12 @@ export default function Update() {
   const router = useRouter();
   const id = router.query.id as string;
 
+  const {admin} = useAuthContext();
+
   const {watch, reset, register, handleSubmit: onSubmit} = useForm();
   const [content, setContent] = useState(contentInitialValue);
-  const slugRef = useRef(null);
+  const slugRef = useRef<any>(null);
   const [imageFile, setImageFile] = useState(null);
-  console.log("🚀 ~ Update ~ imageFile:", imageFile);
 
   const {data} = useGetPostQuery(parseInt(id), {enabled: !!id});
 
@@ -48,7 +50,7 @@ export default function Update() {
     const {title, category_id, cover_image} = data.data;
 
     if (cover_image) {
-      setImageFile(base64ToFile(cover_image));
+      setImageFile(base64ToFile(cover_image) as any);
     }
 
     reset({
@@ -83,16 +85,16 @@ export default function Update() {
 
     if (imageFile) {
       const compressedImageFile = await compressImageFile(imageFile);
-      base64Image = await toBase64(compressedImageFile);
+      base64Image = await toBase64(compressedImageFile as any);
     }
 
-    const payload = {
+    const payload: any = {
       id: parseInt(id),
       title,
       category_id: parseInt(category),
-      author_id: 1,
+      author_id: admin.id,
       content: JSON.stringify(content),
-      slug: slugRef.current.value,
+      slug: slugRef.current?.value,
       cover_image: base64Image,
     };
 
@@ -168,14 +170,14 @@ export default function Update() {
         <form id="form" className="w-full space-y-4" onSubmit={handleSubmit}>
           <ImageUpload
             imagePreview={imageFile ? URL.createObjectURL(imageFile) : ""}
-            onChange={(imageFile) => setImageFile(imageFile)}
+            onChange={(imageFile: any) => setImageFile(imageFile)}
           />
 
           <TextField label="Title" {...register("title")} />
 
           <RichTextEditor
             initialValue={editorContent}
-            onChange={(value) => setContent(value)}
+            onChange={(value: any) => setContent(value)}
           />
 
           <TextField

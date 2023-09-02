@@ -1,27 +1,25 @@
 import {Button, GithubCorner, Logo, PasswordField} from "@/components/common";
 import {withMeta} from "@/components/common/Meta/Meta";
 import TextField from "@/components/common/TextField/TextField";
+import {useAuthContext} from "@/components/layouts/DashboardAuthContextProvider";
 import constants from "@/utils/constants";
-import regex from "@/utils/regex";
+import {supabase} from "@/utils/supabase";
 import {zodResolver} from "@hookform/resolvers/zod";
-import Router from "next/router";
+import {useRouter} from "next/router";
 import {useForm} from "react-hook-form";
+import {toast} from "react-hot-toast";
 import {z} from "zod";
 
 const schema = z.object({
-  username: z.string().nonempty("Username is required"),
-  password: z
-    .string()
-    .nonempty("Password is required")
-    .regex(
-      regex.password,
-      "Password must contain at least one lowercase, one uppercase, and one number",
-    ),
+  email: z.string().nonempty("Email is required"),
+  password: z.string().nonempty("Password is required"),
 });
 
 type FormData = z.infer<typeof schema>;
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const {
     register,
     formState: {errors},
@@ -30,30 +28,32 @@ const LoginPage = () => {
     mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
+  const {setAdmin} = useAuthContext();
   const onSubmit = (values: z.infer<typeof schema>) => {
-    console.log("🚀 ~ onSubmit ~ values:", values);
+    toast.promise(
+      supabase.auth.signInWithPassword(values).then((data) => {
+        if (data.error) throw new Error(data.error.message);
 
-    localStorage.setItem(constants("accessToken") as string, "TOKEN");
-    Router.push("/dashboard");
+        localStorage.setItem(
+          constants("admin") as string,
+          JSON.stringify(data.data.user),
+        );
 
-    // toast.promise(
-    //   mutationLogin.mutateAsync(values, {
-    //     onSuccess: (data) => {
-    //       localStorage.setItem(constants("accessToken") as string, data.token);
-    //       Router.push("/dashboard");
-    //     },
-    //   }),
-    //   {
-    //     loading: "Authenticating...",
-    //     success: "Yay! Welcome back",
-    //     error: "Invalid credentials",
-    //   },
-    // );
+        setAdmin(data.data.user);
+
+        router.push("/dashboard");
+      }),
+      {
+        loading: "Authenticating...",
+        success: "Yay! Welcome back",
+        error: (error) => error.message,
+      },
+    );
   };
 
   return (
@@ -71,8 +71,8 @@ const LoginPage = () => {
               label="Username"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter your username"
-              error={errors.username?.message}
-              {...register("username")}
+              error={errors.email?.message}
+              {...register("email")}
             />
 
             <PasswordField

@@ -22,6 +22,9 @@ export default function Create() {
         onSuccess: () => {
           router.push(routes("dashboard/admin"));
         },
+        onError: (error) => {
+          throw new Error(error as string);
+        },
       }),
       {
         loading: "Processing...",

@@ -1,6 +1,7 @@
 import {useGetAllCategoryQuery} from "@/api/category/query";
 import {useInsertPostMutation} from "@/api/post/mutation";
 import {Button, Select, TextField} from "@/components/common";
+import {useAuthContext} from "@/components/layouts/DashboardAuthContextProvider";
 import {
   DashboardContent,
   DashboardHeader,
@@ -28,6 +29,8 @@ const contentInitialValue = [
 export default function Create() {
   const router = useRouter();
 
+  const {admin} = useAuthContext();
+
   const {data} = useGetAllCategoryQuery({page: 1, limit: 100});
   const categoryOptions = useMemo(() => {
     if (data?.data) {
@@ -39,7 +42,7 @@ export default function Create() {
 
   const {watch, register, handleSubmit: onSubmit} = useForm();
   const [content, setContent] = useState(contentInitialValue);
-  const slugRef = useRef(null);
+  const slugRef = useRef<any>(null);
   const [imageFile, setImageFile] = useState(null);
 
   const insertMutation = useInsertPostMutation();
@@ -48,15 +51,15 @@ export default function Create() {
     let base64Image = null;
     if (imageFile) {
       const compressedImageFile = await compressImageFile(imageFile);
-      base64Image = await toBase64(compressedImageFile);
+      base64Image = await toBase64(compressedImageFile as any);
     }
 
-    const payload = {
+    const payload: any = {
       title,
       category_id: parseInt(category),
-      author_id: 1,
+      author_id: admin.id,
       content: JSON.stringify(content),
-      slug: slugRef.current.value,
+      slug: slugRef.current?.value,
       cover_image: base64Image,
     };
 
@@ -91,14 +94,14 @@ export default function Create() {
         <form id="form" className="w-full space-y-4" onSubmit={handleSubmit}>
           <ImageUpload
             imagePreview={imageFile ? URL.createObjectURL(imageFile) : ""}
-            onChange={(imageFile) => setImageFile(imageFile)}
+            onChange={(imageFile: any) => setImageFile(imageFile)}
           />
 
           <TextField label="Title" {...register("title")} />
 
           <RichTextEditor
             initialValue={contentInitialValue}
-            onChange={(value) => setContent(value)}
+            onChange={(value: any) => setContent(value)}
           />
 
           <TextField

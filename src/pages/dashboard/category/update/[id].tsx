@@ -41,7 +41,7 @@ export default function Update() {
   const updateMutation = useUpdateCategoryMutation();
   const deleteMutation = useDeleteCategoryMutation();
 
-  const handleSubmit = onSubmit(async (values) => {
+  const handleSubmit = onSubmit(async (values: any) => {
     toast.promise(
       updateMutation.mutateAsync(
         {...values, id: parseInt(id as string)},

@@ -1,6 +1,6 @@
 const constantsObject = {
   appName: "CMS Suikocommerce",
-  accessToken: "__accessToken",
+  admin: "admin",
 };
 
 export type Constant = keyof typeof constantsObject;

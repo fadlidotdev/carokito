@@ -1,15 +1,12 @@
-import Router, {useRouter} from "next/router";
+import constants from "@/utils/constants";
 import {createContext, useContext, useEffect, useState} from "react";
 
-import constants from "@/utils/constants";
-import {routes} from "@/utils/routes";
-
 const authContext = createContext<{
-  accessToken: string | null;
-  logout: VoidFunction;
+  admin: any;
+  setAdmin: (user: any) => void;
 }>({
-  accessToken: null,
-  logout: () => {},
+  admin: {},
+  setAdmin: () => {},
 });
 
 type Props = {
@@ -17,46 +14,60 @@ type Props = {
 };
 
 const DashboardAuthContextProvider = ({children}: Props) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  // const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const {pathname} = useRouter();
+  // const {pathname} = useRouter();
+
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+
+  //   try {
+  //     const token = localStorage.getItem(constants("accessToken")) || "";
+  //     setAccessToken(token);
+  //   } catch (error) {
+  //     // eslint-disable-next-line no-console
+  //     console.warn(
+  //       "Error reading local storage with key of " + constants("accessToken"),
+  //     );
+  //     setAccessToken("");
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (typeof accessToken === "string") {
+  //     // if (accessToken && pathname !== routes("dashboard/login")) return;
+  //     // Router.push(
+  //     //   accessToken ? routes("dashboard") : routes("dashboard/login"),
+  //     // );
+  //   }
+  // }, [accessToken, pathname]);
+
+  // const logout = () => {
+  //   Router.replace(routes("dashboard/login"));
+  // };
+
+  const [admin, setAdmin] = useState({});
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window !== "undefined") {
+      const value = localStorage.getItem(constants("admin"));
 
-    try {
-      const token = localStorage.getItem(constants("accessToken")) || "";
-      setAccessToken(token);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "Error reading local storage with key of " + constants("accessToken"),
-      );
-      setAccessToken("");
+      if (value) setAdmin(JSON.parse(value));
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof accessToken === "string") {
-      // if (accessToken && pathname !== routes("dashboard/login")) return;
-      // Router.push(
-      //   accessToken ? routes("dashboard") : routes("dashboard/login"),
-      // );
-    }
-  }, [accessToken, pathname]);
-
-  const logout = () => {
-    localStorage.removeItem(constants("accessToken"));
-    Router.replace(routes("dashboard/login"));
+  const handleSetAdmin = (user: any) => {
+    localStorage.setItem(constants("admin"), JSON.stringify(user));
+    setAdmin(admin);
   };
 
   return (
-    <authContext.Provider value={{accessToken, logout}}>
+    <authContext.Provider value={{admin, setAdmin: handleSetAdmin}}>
       {children}
     </authContext.Provider>
   );
 };
 
-export const useContextAuth = () => useContext(authContext);
+export const useAuthContext = () => useContext(authContext);
 
 export default DashboardAuthContextProvider;
